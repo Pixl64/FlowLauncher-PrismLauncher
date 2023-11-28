@@ -1,0 +1,45 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths-ignore: 
+      - .github/workflows/*
+      - README.md
+      - ./examplePlugin
+
+env:
+  python_ver: 3.10
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ env.PYTHON_VER }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VER }}
+      - name: get version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with: 
+          path: 'plugin.json'
+          prop_path: 'Version'
+      - run: echo ${{steps.version.outputs.prop}} 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./requirements.txt -t ./lib
+          zip -r FlowLauncher-PrismLauncher.zip . -x '*.git*'
+      - name: Publish
+        if: success()
+        uses: softprops/action-gh-release@v1
+        with:
+          files: 'FlowLauncher-PrismLaunchern.zip'
+          tag_name: "v${{steps.version.outputs.prop}}"
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
