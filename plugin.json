@@ -1,0 +1,12 @@
+{
+    "ID":"97f1bfc1-5885-44c8-bc38-68f006cefbee",
+    "ActionKeyword":"mc",
+    "Name":"Prism Launcher",
+    "Description":"Search and Launch Minecraft Instances",
+    "Author":"Pixl64",
+    "Version":"1.0.0",
+    "Language":"python",
+    "Website":"https://github.com/Pixl64/FlowLauncher-PrismLauncher",
+    "IcoPath": "./icon.png",
+    "ExecuteFileName":"run.py"
+}
